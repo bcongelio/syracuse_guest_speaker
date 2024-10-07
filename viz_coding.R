@@ -4,6 +4,8 @@ library(ggtext)
 library(extrafont)
 library(ggridges)
 
+extrafont::loadfonts(device = "win")
+
 pbp <- nflreadr::load_pbp(2024)
 
 teams <- nflreadr::load_teams(2024) |> 
@@ -18,6 +20,11 @@ team_airyards <- pbp |>
 
 team_airyards <- team_airyards |> 
   left_join(teams, by = c("posteam" = "team_abbr"))
+
+
+##################
+# this is material for lecture
+##################
 
 meansd <- function(x, ...) {
   mean <- mean(x)
@@ -38,9 +45,10 @@ ggplot(team_airyards, aes(x = air_yards, y = reorder(posteam, air_yards),
        caption = "Data: nflreadr  |  Chart: @BradCongelio",
        x = "Distribution of Air Yards",
        y = "") +
-  theme(axis.text.y = element_nfl_logo(size = .75),
+  theme(axis.text.y = element_nfl_logo(size = .65),
         strip.background = element_rect(fill = "#f7f7f7"),
-        strip.text = element_text(family = "Roboto Condensed",
-                                  face = "bold",
-                                  size = 12.5)) +
+        strip.text = element_text(family = "Protest Strike",
+                                  size = 12)) +
   nfl_analytics_theme()
+
+ggsave("air_yards.png", dpi = 400)
